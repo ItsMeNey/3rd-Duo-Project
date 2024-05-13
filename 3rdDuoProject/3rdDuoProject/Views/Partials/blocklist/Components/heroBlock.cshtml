@@ -1,0 +1,80 @@
+﻿@inherits UmbracoViewPage<BlockListItem>
+
+@{
+	var row = (HeroBlock)Model.Content;
+	var settings = (GeneralSettings)Model.Settings;
+	if(settings?.Hide?? false) { return; }
+}
+
+<div class="container mt-2">
+	<!-- display-f align-center justify-space-between mt-2 -->
+	
+	@if(row.TextAlign == "text-start" || row.TextAlign == null)
+	{
+		<main class="main row align-center col-gap-9 mt-2 mb-3">
+			<div class="main__info text-white">
+				<h3 class="font-xxl">@row.Title</h3>
+				<p class="font-sm text-tertiary-light-5 leading-2 mx-width-650">
+					@row.Subtitle
+				</p>
+			</div>
+
+			@if(row.CTabutton != null)
+			{
+				<div class="main__btn text-white mt-3">
+					<a href="@row.CTabutton.Url"><button class="btn-green font-sm pl-2 pr-2 b-rad">@row.CTabutton.Name</button></a>
+					<p class="text-tertiary-light-5">It is absolutely free.</p>
+				</div>
+			}
+			@if (row.VideoAlignment == "thumbnailRight")
+			{
+				@if (row.VideoUrl != null)
+				{
+
+					<iframe class="mx-width-650 b-rad-sm mt-2 mb-4"
+							width="100%"
+							height="300"
+							src="@row.VideoUrl.Url" target="@row.VideoUrl.Target">
+					</iframe>
+
+
+				}
+			}
+		</main>
+
+
+	}
+	@if (row.TextAlign == "text-center")
+	{
+		<div class="text-white display-f flex-column align-center p-2 pt-0">
+			<h3 class="font-lg text-center leading-5">@row.Title</h3>
+			<p class="mx-width-768 text-center">
+			@row.Subtitle
+			</p>
+
+			@if (row.CTabutton != null)
+			{
+				<div class="main__btn text-white mt-3">
+					<a href="@row.CTabutton.Url"><button class="btn-green font-sm pl-2 pr-2 b-rad">@row.CTabutton.Name</button></a>
+					<p class="text-tertiary-light-5">It is absolutely free.</p>
+				</div>
+			}
+		</div>
+	}	
+
+		
+	@if(row.VideoAlignment == null || row.VideoAlignment == "thumbnailCenter")
+	{
+		@if (row.VideoUrl != null)
+		{
+			<iframe class="mx-width-1200 b-rad-sm mt-2 mb-4"
+					width="100%"
+					height="520"
+					src="@row.VideoUrl.Url" target="@row.VideoUrl.Target">
+			</iframe>
+		}
+	}
+
+	
+</div>
+

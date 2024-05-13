@@ -1,0 +1,43 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+@*
+	This snippet displays a list of links of the pages immediately under the top-most page in the content tree.
+	This is the home page for a standard website.
+	It also highlights the current active page/section in the navigation with the CSS class "current".
+*@
+
+@{ var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray(); }
+
+@if (selection?.Length > 0)
+{
+	<header class="header text-white container mt-2">
+		<h1 class="header__title"><a href="/">@Umbraco.GetDictionaryValue("Site Name")</a></h1>
+		<nav>
+			<div class="header__menu">
+				<ul class="header__navs">
+					@foreach (var item in selection)
+					{
+						<li class="header__items text-hover-primary-light-8 @(item.IsAncestorOrSelf(Model) ? "header__items text-green text-hover-green-light-4 text-underline" : null)">
+							<a href="@item.Url(PublishedUrlProvider)">@item.Name</a>
+						</li>
+					}
+					<li class="header__items text-hover-fb font-sm">
+						<a href="https://www.facebook.com/jestoni.estardo.5" target="https://www.facebook.com/jestoni.estardo.5.Target"><i class="fa-brands fa-facebook-f"></i></a>
+					</li>
+					<li class="header__items text-hover-tw font-sm">
+						<a href="https://github.com/ItsMeNey" target="https://github.com/ItsMeNey.Target"><i class="fa-brands fa-github"></i></a>
+					</li>
+					<li class="header__items text-hover-yt font-sm">
+						<a href="https://www.youtube.com/channel/UCyjDmVnyCns3sBrsD1Yta2Q" target="https://www.youtube.com/channel/UCyjDmVnyCns3sBrsD1Yta2Q.Target"><i class="fa-brands fa-youtube"></i></a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header> 
+}

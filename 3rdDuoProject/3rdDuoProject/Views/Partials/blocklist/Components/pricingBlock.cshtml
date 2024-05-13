@@ -1,0 +1,101 @@
+﻿@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var row = (PricingBlock)Model.Content;
+    var settings = (GeneralSettings)Model.Settings;
+    if(settings?.Hide?? false) { return; }
+    if(row == null || row.PricingItem == null || !row.PricingItem.Any()) { return; }
+}
+
+  
+<div class="container text-white text-center">
+        <h2 class="font-xl">Best plan that suit your business needs</h2>
+        <p>
+            Start with the Free plan to try out our platform for an unlimited period
+            of time
+        </p>
+    <div class="display-f justify-center align-center col-gap-3 mb-4">
+        <span>Bill Monthly</span>
+        <label class="switch">
+            <input type="checkbox" />
+            <span class="slider round"></span>
+        </label>
+        <span>Bill Annually</span>
+    </div>
+</div>
+
+
+<div class="container mt-2">
+    <div class="row gap-2 p-2">
+        @foreach(var item in row.PricingItem)
+        {
+            var rowItem = (PricingItem)item.Content;
+            var rowSettings = (GeneralSettings)item.Settings;
+            if (rowSettings?.Hide ?? false) continue;
+
+            <div class="col-12-xs col-4-xl">
+                <div class="card-white b-rad-sm p-2 text-center display-f flex-column justify-space-between row-gap-2">
+                    <div class="display-f flex-column">
+                        <p class="card__title fw-xxl text-primary">@rowItem.PricingTitle</p>
+                        <img src="/img/starter-pack.png" />
+                        <p>
+                            @rowItem.PricingDescription
+                        </p>
+
+                        @if (rowItem.Price > 315)
+                        {
+                            <h2 class="mb-0 text-green-light-2 font-xl">
+                                $@rowItem.Price <span class="text-black font-sm">/month</span>
+                                <hr/>
+                            </h2>
+                        }
+                        else if (rowItem.Price > 83)
+                        {
+                            <h2 class="mb-0 text-error-light-2 font-xl">
+                                $@rowItem.Price <span class="text-black font-sm">/month</span>
+                                <hr />
+                            </h2>
+                        }
+                        else if(rowItem.Price < 84)
+                        {
+                            <h2 class="mb-0 text-secondary-light-2 font-xl">
+                                $@rowItem.Price <span class="text-black font-sm">/month</span>
+                                <hr />
+                            </h2>
+                        }
+                        else{ return; }
+                    </div>
+
+                    <div class="margin-auto mx-width-200 mb-2">
+                        @if(rowItem.PricingPerks != null)
+                        {
+                            @foreach(var perks in rowItem.PricingPerks)
+                            {
+                                var rowPerks = (PricingPerks)perks.Content;
+
+                                @if(!string.IsNullOrEmpty(rowPerks.AvailablePerks))
+                                {
+                                    <div class="display-f align-center col-gap-1">
+                                        <span><i class="fa-solid fa-circle-check text-green"></i></span>
+                                        <p>@rowPerks.AvailablePerks</p>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(rowPerks.NotAvailablePerks))
+                                {
+                                    <div class="display-f align-center col-gap-1">
+                                        <span><i class="fa-solid fa-circle-check text-tertiary"></i></span>
+                                        <p>@rowPerks.NotAvailablePerks</p>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <button class="btn-secondary text-white font-sm b-rad-xs">
+                        Get Started
+                    </button>
+                </div>
+            </div>      
+        }
+    </div>
+</div>
+
